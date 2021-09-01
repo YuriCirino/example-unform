@@ -3,6 +3,9 @@ import styled from 'styled-components'
 
 
 export const Form = styled(Unform)`
-    width: 30%;
+    min-width: 30%;
     padding:25px;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
 `

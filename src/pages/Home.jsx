@@ -1,16 +1,14 @@
-import "./App.css"
 import { useRef, useEffect, useState } from "react"
+import { useHistory } from "react-router"
 import { mask } from "remask"
-import { Form } from "./components/Form/Form"
-import Input from "./components/Form/Input"
+import { Form } from "../components/Form/Form"
+import Input from "../components/Form/Input"
 import * as Yup from "yup"
-import {RiFileList2Line} from 'react-icons/ri'
-import Row from './components/Layout/Row'
-import Col from './components/Layout/Column'
-
-import Button from "./components/Form/Button"
-
 import styled from "styled-components"
+import {RiFileList2Line} from 'react-icons/ri'
+import Row from '../components/Layout/Row'
+import Col from '../components/Layout/Column'
+import Button from "../components/Button"
 
 const Container = styled.div`
     width: 100%;
@@ -18,7 +16,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 50px;
+    padding: 25px 50px;
     background-color: #fcfcfc;
 `
 const FormTitle = styled.h1`
@@ -26,9 +24,11 @@ const FormTitle = styled.h1`
     font-size: 2.5rem;
 `
 
-function App() {
+function Home() {
     const formRef = useRef(null)
     const [telephone, setTelephone] = useState("")
+    const [id, setId] = useState("#")
+    let history = useHistory();
 
     async function handleSubmit(data) {
         try {
@@ -37,9 +37,10 @@ function App() {
                 email: Yup.string()
                     .email("Enter a valid email")
                     .required("Email is required"),
-                telephone:Yup.string().required('Telephone is required')
+                id: Yup.string().required('ID is required').min(4,'4 digits minimum required').max(4)
             })
 
+            data.id = data.id.replace(/\D*/,'')
             console.log(data)
 
             await schema.validate(data, {
@@ -47,6 +48,8 @@ function App() {
             })
 
             formRef.current.setErrors({})
+            history.push('/finished')
+
         } catch (err) {
             if (err instanceof Yup.ValidationError) {
                 const errorMessages = {}
@@ -65,6 +68,7 @@ function App() {
             formRef.current.setData({
                 name: "John Doe",
                 email: "johndoe@example.com",
+                id:'#2332',
             })
         }, 500)
     }, [])
@@ -76,17 +80,32 @@ function App() {
                 <Col><RiFileList2Line size={"2.5rem"} color={"#5f30e2"}></RiFileList2Line></Col>
             </Row>
             
+            
             <Form onSubmit={handleSubmit} ref={formRef}>
-                {" "}
                 {/*initialData={initialData} apenas para dados estáticos*/}
-                <Input
+                <Row>
+                <Col><Input
                     name="name"
                     label="Name"
                     type="text"
                     autoComplete="off"
                     placeholder="Your Name"
-                />
-                <Input name="email" label="Email" type="email" />
+                    required
+                /></Col>
+                <Col><Input
+                    name="id"
+                    label="ID"
+                    type="text"
+                    placeholder={"#1111"}
+                    value={id}
+                    required
+                    onChange={(e)=>{
+                        let value = mask(e.target.value,'#9999')
+                        setId(value)
+                    }}
+                /></Col>
+            </Row>
+                <Input name="email" label="Email" type="email" required/>
                 <Input name="password" label="Password" type="password" />
                 <Input
                     name="telephone"
@@ -99,16 +118,11 @@ function App() {
                         setTelephone(value)
                     }}
                 />
-                <Input
-                    name="id"
-                    label="ID"
-                    type="password"
-                    placeholder={"#1111"}
-                />
-                <Button type="submit">Enviar</Button>
+                
+                <Button type="submit">Submit</Button>
             </Form>
         </Container>
     )
 }
 
-export default App
+export default Home
