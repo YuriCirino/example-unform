@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+form{
+  padding:20px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+form input {
+  margin:5px;
+}
