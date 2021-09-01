@@ -63,8 +63,8 @@ function App() {
     useEffect(() => {
         setTimeout(() => {
             formRef.current.setData({
-                name: "Yuri",
-                email: "yuricirino@example.com",
+                name: "John Doe",
+                email: "johndoe@example.com",
             })
         }, 500)
     }, [])
