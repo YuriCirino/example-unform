@@ -1,4 +1,4 @@
-# Unform, IMask and Styled Components - Example
+# Unform, Remask and Styled Components - Example
 
 In this projetc i've been used Unform, Remask and Styled Components.
 I was learning Unform with this project and resolved to use Styled Components to style my inputs fields and Remask to mask them.
